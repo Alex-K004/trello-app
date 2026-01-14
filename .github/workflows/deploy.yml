@@ -2,9 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mail ]
   pull_request:
-    branches: [ main ]
+    branches: [ mail ]
   workflow_dispatch:  # Позволяет запускать вручную
 
 jobs:
