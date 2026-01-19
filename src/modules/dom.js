@@ -81,19 +81,37 @@ export default class DOM {
       placeholder.addEventListener('click', (e) => this.showAddCardForm(e));
     });
 
-    document.querySelectorAll('.add-card-btn').forEach(button => {
-      button.addEventListener('click', (e) => this.addCard(e));
-    });
-
-    document.querySelectorAll('.cancel-card-btn').forEach(button => {
-      button.addEventListener('click', (e) => this.hideAddCardForm(e));
-    });
-
-    // Обработчики для удаления карточек
+    // Используем делегирование событий для всех действий
     document.addEventListener('click', (e) => {
+      // Обработка удаления карточки
       const deleteBtn = e.target.closest('.delete-card');
       if (deleteBtn) {
+        e.preventDefault();
+        e.stopPropagation();
         this.deleteCard(deleteBtn.dataset.cardId);
+        return;
+      }
+      
+      // Обработка иконки внутри кнопки удаления
+      const deleteIcon = e.target.closest('.delete-card i');
+      if (deleteIcon) {
+        e.preventDefault();
+        e.stopPropagation();
+        const deleteBtn = deleteIcon.closest('.delete-card');
+        this.deleteCard(deleteBtn.dataset.cardId);
+        return;
+      }
+      
+      // Обработка кнопок добавления карточек
+      if (e.target.classList.contains('add-card-btn')) {
+        this.addCard(e);
+        return;
+      }
+      
+      // Обработка кнопок отмены
+      if (e.target.classList.contains('cancel-card-btn')) {
+        this.hideAddCardForm(e);
+        return;
       }
     });
 

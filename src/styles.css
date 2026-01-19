@@ -87,10 +87,11 @@ body {
     padding: 12px;
     margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: move;
+    cursor: grab;
     position: relative;
     transition: all 0.2s ease;
     border-left: 4px solid #0079bf;
+    user-select: none;
 }
 
 .card:hover {
@@ -108,6 +109,38 @@ body {
     line-height: 1.4;
 }
 
+/* Пространство для вставки (раздвижение между карточками) */
+.drop-space {
+    background-color: rgba(0, 121, 191, 0.08);
+    pointer-events: none;
+}
+
+/* Убираем анимации для drop-space чтобы не было прыжков */
+.drop-space {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Карточка при перетаскивании */
+.card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+    transform: rotate(3deg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+@keyframes spaceAppear {
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Кнопка удаления */
 .delete-card {
     position: absolute;
     top: 8px;
@@ -115,12 +148,33 @@ body {
     color: #6b778c;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, color 0.2s ease;
     font-size: 0.9rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.8);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+}
+
+.card:hover .delete-card {
+    opacity: 1;
 }
 
 .delete-card:hover {
     color: #eb5a46;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Запрещаем перетаскивание при клике на крестик */
+.delete-card,
+.delete-card * {
+    cursor: pointer !important;
+    -webkit-user-drag: none;
+    user-drag: none;
 }
 
 .add-card-form {
@@ -182,13 +236,6 @@ body {
 
 .add-card-placeholder:hover {
     background: rgba(0, 0, 0, 0.05);
-}
-
-.drag-over {
-    background: rgba(0, 121, 191, 0.1);
-    border-radius: 8px;
-    min-height: 50px;
-    margin-bottom: 10px;
 }
 
 .footer {
