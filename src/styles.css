@@ -174,7 +174,6 @@ body {
 .delete-card * {
     cursor: pointer !important;
     -webkit-user-drag: none;
-    user-drag: none;
 }
 
 .add-card-form {
